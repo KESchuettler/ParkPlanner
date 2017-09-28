@@ -1,0 +1,7 @@
+<app-header></app-header>
+<p>
+  main works!
+</p>
+<app-left-slider (selectedPark)='updateCurrentPark($event)'></app-left-slider>
+<app-middle-slider [currentPark]='currentPark'></app-middle-slider>
+<app-right-slider></app-right-slider>

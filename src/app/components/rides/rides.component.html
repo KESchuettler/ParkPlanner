@@ -1,0 +1,6 @@
+<ul>
+    <li *ngFor="let ride of rides" (click)="selectRide(ride)" >
+        Id: {{ride.id}} - {{ride.rideName}}
+        <app-ride-detail *ngIf="selectedRideId===ride.id" [ride]="ride"></app-ride-detail>
+    </li>
+</ul>

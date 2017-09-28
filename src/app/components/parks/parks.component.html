@@ -1,0 +1,6 @@
+<ul>
+    <li *ngFor="let park of parks" (click)='selectPark(park)' >
+      id: {{park.id}} : {{ park.parkName }}
+      <!-- <app-rides *ngIf="selectedParkId === park.id" [park]="park"></app-rides> -->
+    </li>
+</ul>

@@ -1,0 +1,6 @@
+<p>
+  left-slider works!
+</p>
+<span *ngIf='currentPark'>Park: {{currentPark.parkName}}</span>
+<app-search-bar></app-search-bar>
+<app-parks (selectedPark)='updateSelectedPark($event)'></app-parks>

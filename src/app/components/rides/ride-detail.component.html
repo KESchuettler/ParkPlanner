@@ -1,0 +1,6 @@
+<ul>
+    <li *ngFor="let waitTime of waitTimes">
+        {{ride.rideName}} | {{waitTime.dateTime}} | {{waitTime.waitTime}}
+    </li>
+    <li>Average WaitTime = {{ averageTime }}</li>
+</ul>
