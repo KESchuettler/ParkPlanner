@@ -1,6 +1,17 @@
-<ul>
-    <li *ngFor="let ride of rides" (click)="selectRide(ride)" >
-        Id: {{ride.id}} - {{ride.rideName}}
-        <app-ride-detail *ngIf="selectedRideId===ride.id" [ride]="ride"></app-ride-detail>
-    </li>
-</ul>
+<div *ngIf='currentPark'>
+    <h1>{{currentPark.parkName}}</h1>
+    <ul>
+        <li *ngFor='let ride of ridesList' (click)='selectRide(ride)'>
+            {{ride.rideName}}
+        </li>
+    </ul>
+    <div *ngIf='selectedRideList && selectedRideList.length > 0'>
+        <h1>User Rides</h1>
+        <ol>
+            <li *ngFor='let ride of selectedRideList' (click)='deselectRide(ride)'>
+                {{ride.rideName}}
+            </li>
+        </ol>
+    </div>
+    
+</div>

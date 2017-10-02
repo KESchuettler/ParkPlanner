@@ -14,6 +14,5 @@ export class MainComponent {
 
   updateCurrentPark(park: Park) {
     this.currentPark = park;
-    console.log(park)
   }
 }
