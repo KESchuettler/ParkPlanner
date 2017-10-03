@@ -13,5 +13,13 @@
             </li>
         </ol>
     </div>
+    <div *ngIf='waitTimes'>
+        <ol>
+            <li *ngFor='let ride of waitTimes'>
+                <app-chart [data]='ride'></app-chart>
+            </li>
+        </ol>
+    </div>
     
 </div>
+<app-enter (buttonClick)='gatherWaitTimes($event)'></app-enter>

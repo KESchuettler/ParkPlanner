@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, OnChanges, SimpleChange } from '@angular/core';
+import {Observable} from 'rxjs/Rx';
 
 import { MySqlService } from '../../services/my-sql.service';
 import { Park } from '../parks/parks.component';
@@ -14,31 +15,30 @@ export class RidesComponent implements OnInit {
   ridesList: Array<Ride>;
   selectedRideList: Array<Ride> = [];
   selectedRideStore: Array<Array<Ride>> = [];
+  waitTimes: Array<any>;
 
   @Input() currentPark: Park;
   constructor(private _mySqlService: MySqlService) {}
   
   ngOnInit() {
-
-    // this._mySqlService.getRides(this.currentPark.id)
-    //   .subscribe(res => this.ridesList = res);
   }
 
   ngOnChanges(changes){
-    // current selected Rides exist?
+    /** Save any existing user selected rides */
     if(changes.currentPark.previousValue) {
       this.selectedRideStore[changes.currentPark.previousValue.id] = this.selectedRideList;
     }
-      // save current selected Rides
     
-    // current park changes?
+    /** Clear wait list on park change */
+    if(this.waitTimes) this.waitTimes = [];
+
+    /** 
+     * Load any previously user selected rides and set new rides list.
+     */
     if(changes.currentPark.currentValue && changes.currentPark.currentValue.id) {
-      // get new rides
       this._mySqlService.getRides(changes.currentPark.currentValue.id)
         .subscribe(res => {
-          // set new ride list
           this.ridesList = res;
-          // selected Rides exist for new park?
           if(this.selectedRideStore[this.currentPark.id]) {
             this.selectedRideList = this.selectedRideStore[this.currentPark.id]
           } else {
@@ -64,6 +64,11 @@ export class RidesComponent implements OnInit {
       this.selectedRideList = this.selectedRideList.slice(0, i)
                                   .concat(this.selectedRideList.slice(i + 1))
     }
+  }
+
+  gatherWaitTimes() {
+    this._mySqlService.getRideWaitTime(this.selectedRideList)
+      .subscribe(res => this.waitTimes = res)
   }
   
 }

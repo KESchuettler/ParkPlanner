@@ -4,9 +4,9 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http';
 import { MySqlService } from './services/my-sql.service';
+// import { HelpersService } from './services/helpers.service';
 import { ParksComponent } from './components/parks/parks.component';
 import { RidesComponent } from './components/rides/rides.component';
-import { RideDetailComponent } from './components/rides/ride-detail.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SplashComponent } from './components/splash/splash.component';
@@ -17,13 +17,13 @@ import { MiddleSliderComponent } from './components/middle-slider/middle-slider.
 import { RightSliderComponent } from './components/right-slider/right-slider.component';
 import { RidePictureComponent } from './components/rides/ride-picture/ride-picture.component';
 import { ChartComponent } from './components/chart/chart.component';
+import { EnterComponent } from './components/buttons/enter/enter.component';
 
-@NgModule({
+@NgModule({ 
   declarations: [
     AppComponent,
     RidesComponent,
     ParksComponent,
-    RideDetailComponent,
     SearchBarComponent,
     HeaderComponent,
     SplashComponent,
@@ -34,12 +34,15 @@ import { ChartComponent } from './components/chart/chart.component';
     RightSliderComponent,
     RidePictureComponent,
     ChartComponent,
+    EnterComponent,
   ],
   imports: [
     BrowserModule,
     HttpModule
   ],
-  providers: [],
+  providers: [
+    MySqlService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
