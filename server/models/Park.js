@@ -24,16 +24,16 @@ Parks.getWaitTimes = async () => {
     const waitTimes = await new Themeparks.Parks[park.apiParkName]().GetWaitTimes();
     waitTimes.forEach(async (rideObj) => {
       const rideId = await Rides.where({ "apiId": rideObj.id })
-                                        .fetch()
-                                        .then(function rideIdReturn(model) {
-                                          if(model) {
-                                            return model.attributes.id;
-                                          } else {
-                                            console.log(`model: `, model);
-                                            console.log('rideObj: ', rideObj);
-                                          }
-                                        })
-                                        .catch(err => console.log(err));
+                                  .fetch()
+                                  .then(function rideIdReturn(model) {
+                                    if(model) {
+                                      return model.attributes.id;
+                                    } else {
+                                      console.log(`model: `, model);
+                                      console.log('rideObj: ', rideObj);
+                                    }
+                                  })
+                                  .catch(err => console.log(err));
       if (rideObj.status !== "Closed") {
         return new RideWaitTimes({
           rideId,

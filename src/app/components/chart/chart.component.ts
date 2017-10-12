@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NgClass } from '@angular/common';
 import * as moment from 'moment';
+import Chart from 'chart.js';
 
 declare var jQuery:any;
 
@@ -17,36 +18,40 @@ export class ChartComponent  {
   private style: String;
 
   ngAfterContentInit() {
-    if(this.data) this.style = `chart-container-${this.data.id}`
+    if(this.data) {
+      console.log(this.data.id)
+      this.style = `chart-container-${this.data.id}`
+    }
   }
   
   ngAfterViewInit() {
     this.renderChart();
   }
 
+  /** MapReduce database data to make it compatible with graph */
   renderChart() {
     if(this.data) {
       this.dataMorph = this.data.times
                         .map(t => [moment(t.dateTime).format("HH:mm"), t.waitTime])
-                        .reduce((a, t) => {
-                          if(a[t[0]]) {
-                            a[t[0]].push(t[1]);
+                        .sort()
+                        .reduce((acc, time) => {
+                          if(acc[time[0]]) {
+                            acc[time[0]].push(time[1]);
                           } else {
-                            a[t[0]] = [t[1]]
+                            acc[time[0]] = [time[1]]
                           }
-                          return a;
+                          return acc;
                         }, {});
+      console.log(this.dataMorph);
       this.dataMorph = Object.keys(this.dataMorph).reduce((acc, key) => {
-        acc.push([moment(key, "HH:mm"), this.dataMorph[key].reduce((acc, wait) => acc+wait / this.dataMorph[key].length, 0)])
+        acc.push([this.formatTime(key), this.dataMorph[key].reduce((acc, wait) => acc + wait / this.dataMorph[key].length, 0)])
         return acc
       }, [])
-
-      console.log(this.dataMorph)
-
+      console.log(this.dataMorph);
+      /** Highchart formatting */
       jQuery(`.${this.style}`).highcharts({
         xAxis: {
-          title: { text: null },
-          type: 'string'
+          title: { text: null }
         },
         legend: {
           enabled: false
@@ -58,13 +63,19 @@ export class ChartComponent  {
           text: `Ride wait time for ${this.data.rideName}`
         },
         series: [{
-          type: 'spline',
+          type: 'line',
           // data: this.data.times.map( t => [t.dateTime, t.waitTime] )
           data: this.dataMorph
                                
         }]
       });
     }
+  }
+
+  formatTime(time: String) {
+    var hour = time.substring(0,2);
+    var minute = time.substring(3);
+    return eval(`${hour[0] !== "0" ? hour : hour[1] }.${minute}`)
   }
 
 }
